@@ -41,13 +41,13 @@ module.exports = {
       // 拦截携带 /api 的接口
       '/api': {
         // 代理到的目标地址
-        target: 'https://api.it120.cc/zcr',
+        target: 'http://ihrm-java.itheima.net',
         // 是否开启跨域
         changeOrigin: true,
         // 路径重写
         pathRewrite: {
           // 将 /api 转换为 空
-          '^/api': ''
+          // '^/api': ''
         }
       }
     }

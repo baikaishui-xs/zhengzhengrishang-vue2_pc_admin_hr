@@ -8,13 +8,13 @@
       <div class="body-box">
         <el-form :model="formData" class="form">
           <el-form-item class="item" label="" label-width="0">
-            <el-input v-model="formData.username" class="input"></el-input>
+            <el-input v-model="formData.mobile" class="input"></el-input>
           </el-form-item>
           <el-form-item class="item1" label="" label-width="0">
-            <el-input v-model="formData.username" class="input"></el-input>
+            <el-input v-model="formData.password" type="password" class="input"></el-input>
           </el-form-item>
           <el-form-item class="item2" label="" label-width="0">
-            <el-button class="btn" type="primary">登录</el-button>
+            <el-button class="btn" type="primary" @click="login">登录</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -27,9 +27,17 @@ export default {
   data() {
     return {
       formData: { // 表单数据
-        username: '',
-        password: ''
+        mobile: '13800000002',
+        password: '123456'
       }
+    }
+  },
+  methods: {
+    async login() {
+      await this.$store.dispatch('user/getToken', this.formData)
+      this.$router.push({
+        name: 'Dashboard'
+      })
     }
   }
 }
