@@ -63,7 +63,7 @@
 </template>
 <script>
 import { getEmployeeList, getStaffInfo } from '@/api/employeeManagement.js'
-import { getAllTheCornerList } from '@/api/roleManagement.js'
+import { getAllTheCornerList, updateRole } from '@/api/roleManagement.js'
 export default {
   name: 'Staff',
   data() {
@@ -80,7 +80,8 @@ export default {
         title: '' // 标题
       },
       cornerList: [], // 角色列表
-      checkList: ['选中且禁用', '复选框 A'] // 选中项
+      checkList: [], // 选中项
+      selectStaffId: 0 // 当前员工 ID
     }
   },
   created() {
@@ -105,7 +106,9 @@ export default {
       this.paginationObj.page = newPage
       this.getEmployeeList()
     },
-    sure() { // 确定
+    async sure() { // 确定
+      await updateRole({ id: this.selectStaffId, roleIds: this.checkList })
+      this.$message.success('分配角色成功')
       this.dialogConfig.isShowDialog = false
     },
     cancel() { // 取消
@@ -115,6 +118,7 @@ export default {
       if (type === '分配角色') {
         this.dialogConfig.title = '分配角色'
       }
+      this.selectStaffId = id
       await this.getStaffInfo(id)
       this.dialogConfig.isShowDialog = true
     }

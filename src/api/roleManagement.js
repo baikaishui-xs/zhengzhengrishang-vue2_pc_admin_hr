@@ -9,3 +9,11 @@ export function getAllTheCornerList(params) { // 获取 所有角色列表
     params
   })
 }
+
+export function updateRole(data) { // 给员工分配角色
+  return request({
+    url: '/sys/user/assignRoles',
+    method: 'put',
+    data
+  })
+}
