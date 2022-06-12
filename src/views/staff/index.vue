@@ -7,7 +7,7 @@
       <div class="left-box">
         <i class="el-icon-info"></i>
         <span class="text">共</span>
-        <span class="text1">{{ total }}</span>
+        <span class="text1">{{ paginationObj.total }}</span>
         <span class="text2">条记录</span>
       </div>
       <div class="right-box">
@@ -21,7 +21,9 @@
     <el-table :data="tableList" border stripe class="table" style="margin-top: 20px;">
       <el-table-column class="index" label="序号" type="index" align="center" width="80px"></el-table-column>
       <el-table-column class="username" label="姓名" prop="username" align="center"></el-table-column>
-      <el-table-column class="mobile" label="头像" prop="staffPhoto" align="center"></el-table-column>
+      <el-table-column class="mobile" label="头像" align="center">
+        <img slot-scope="{row}" :src="row.staffPhoto" style="width: 100px; border-radius: 50%;">
+      </el-table-column>
       <el-table-column class="workNumber" label="工号" prop="workNumber" align="center"></el-table-column>
       <el-table-column class="formOfEmployment" label="聘用形式" prop="formOfEmployment" align="center"></el-table-column>
       <el-table-column class="departmentName" label="部门" prop="departmentName" align="center"></el-table-column>
@@ -32,6 +34,16 @@
         <span class="del" style="color: #F56C6D; cursor: pointer">删除</span>
       </el-table-column>
     </el-table>
+
+    <!-- 分页组件 -->
+    <el-pagination
+      :page-size="paginationObj.pagesize"
+      :current-page="paginationObj.page"
+      layout="prev, pager, next"
+      :total="paginationObj.total"
+      @current-change="changePage"
+    >
+    </el-pagination>
   </div>
 </template>
 <script>
@@ -41,7 +53,12 @@ export default {
   data() {
     return {
       tableList: [], // 表格数据
-      total: 0 // 共有多少条记录
+      demoList: [], // Demo 列表
+      paginationObj: { // 分页器对象
+        page: 1, // 页码
+        pagesize: 5, // 每页显示多少条数据
+        total: 0 // 共多少条数据
+      }
     }
   },
   created() {
@@ -49,9 +66,13 @@ export default {
   },
   methods: {
     async getEmployeeList() { // 获取 员工列表
-      const result = await getEmployeeList({ page: 1, size: 5, tobal: 0 })
-      this.total = result.total
+      const result = await getEmployeeList({ page: this.paginationObj.page, size: this.paginationObj.pagesize })
+      this.paginationObj.total = result.total
       this.tableList = result.rows
+    },
+    changePage(newPage) { // 监听页码
+      this.paginationObj.page = newPage
+      this.getEmployeeList()
     }
   }
 }
