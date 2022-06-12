@@ -1,7 +1,8 @@
 <template>
   <div class="organization-container">
     <el-card>
-      <el-row type="flex" style="margin-bottom: 20px;">
+      <el-row type="flex" style="margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #cfcfcf;">
+        <i class="el-icon-video-camera-solid" style="margin-right: 10px; font-size: 20px"></i>
         <el-col>郑郑日上电子商务有限公司</el-col>
         <el-col style="text-align: center;" :span="2">负责人</el-col>
         <el-col style="text-align: center;" :span="2">操作</el-col>
