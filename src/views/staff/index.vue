@@ -1,0 +1,103 @@
+<template>
+  <!-- 员工 -->
+
+  <div class="staff-container">
+
+    <el-card class="card">
+      <div class="left-box">
+        <i class="el-icon-info"></i>
+        <span class="text">共</span>
+        <span class="text1">{{ total }}</span>
+        <span class="text2">条记录</span>
+      </div>
+      <div class="right-box">
+        <el-button class="btn" type="success">excel 导入</el-button>
+        <el-button class="btn1" type="danger">excel 导出</el-button>
+        <el-button class="btn2" type="primary">excel 新增员工</el-button>
+      </div>
+    </el-card>
+
+    <!-- Table 表格（基础表格） -->
+    <el-table :data="tableList" border stripe class="table" style="margin-top: 20px;">
+      <el-table-column class="index" label="序号" type="index" align="center" width="80px"></el-table-column>
+      <el-table-column class="username" label="姓名" prop="username" align="center"></el-table-column>
+      <el-table-column class="mobile" label="头像" prop="staffPhoto" align="center"></el-table-column>
+      <el-table-column class="workNumber" label="工号" prop="workNumber" align="center"></el-table-column>
+      <el-table-column class="formOfEmployment" label="聘用形式" prop="formOfEmployment" align="center"></el-table-column>
+      <el-table-column class="departmentName" label="部门" prop="departmentName" align="center"></el-table-column>
+      <el-table-column class="timeOfEntry" label="入职时间" prop="timeOfEntry" align="center"></el-table-column>
+      <el-table-column class="operate" label="操作" align="center">
+        <span class="check" style="color: #44A0FF; cursor: pointer">查看</span>
+        <span class="role" style="margin: 0 10px; color: #67C23A; cursor: pointer">角色</span>
+        <span class="del" style="color: #F56C6D; cursor: pointer">删除</span>
+      </el-table-column>
+    </el-table>
+  </div>
+</template>
+<script>
+import { getEmployeeList } from '@/api/employeeManagement.js'
+export default {
+  name: 'Staff',
+  data() {
+    return {
+      tableList: [], // 表格数据
+      total: 0 // 共有多少条记录
+    }
+  },
+  created() {
+    this.getEmployeeList()
+  },
+  methods: {
+    async getEmployeeList() { // 获取 员工列表
+      const result = await getEmployeeList({ page: 1, size: 5, tobal: 0 })
+      this.total = result.total
+      this.tableList = result.rows
+    }
+  }
+}
+</script>
+<style lang='scss' scoped>
+.staff-container {
+  .card {
+    ::v-deep .el-card__body {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+    .left-box {
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      border: 1px solid #91D5FF;
+      background: #E7F4FF;
+      .el-icon-info {
+        margin-right: 3px;
+        color: #409EFF;
+      }
+
+      .text {
+      }
+
+      .text1 {
+        margin: 0 8px;
+      }
+
+      .text2 {
+
+      }
+    }
+
+    .right-box {
+      .btn {
+
+      }
+      .btn1 {
+
+      }
+      .btn2 {
+
+      }
+    }
+  }
+}
+</style>

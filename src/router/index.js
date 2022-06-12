@@ -55,14 +55,30 @@ export const constantRoutes = [
     }]
   },
 
+  // 组织架构
   {
-    path: '/organization',
+    path: '/organization', // 路由地址
+    component: Layout, // 路由组件（这里的组件要为 Layout，也就是在 Layout 组件中导航）
+    children: [{ // 二级路由
+      path: '', // path 为空，则默认使用一级路由的地址，也就是会和一级路由的组件一起展示
+      name: 'Organization',
+      component: () => import('@/views/organization'), // 按需加载
+      meta: { // 路由元信息（作用：向组件提供数据）
+        title: '组织架构',
+        icon: 'el-icon-office-building'
+      }
+    }]
+  },
+
+  // 员工
+  {
+    path: '/staff',
     component: Layout,
     children: [{
-      path: 'organization',
-      name: 'Organization',
-      component: () => import('@/views/organization/index'),
-      meta: { title: '组织架构', icon: 'el-icon-office-building' }
+      path: '',
+      name: 'Staff',
+      component: () => import('@/views/staff/index'),
+      meta: { title: '员工', icon: 'el-icon-user-solid' }
     }]
   },
 
