@@ -24,3 +24,11 @@ export function batchImportEmployee(data) { // 批量导入员工
     data
   })
 }
+
+export function addStaff(data) { // 新增 员工
+  return request({
+    url: '/sys/user',
+    method: 'post',
+    data
+  })
+}

@@ -13,7 +13,7 @@
       <div class="right-box">
         <el-button class="btn" type="success" @click="$router.push('import')">excel 导入</el-button>
         <el-button class="btn1" type="danger">excel 导出</el-button>
-        <el-button class="btn2" type="primary">新增员工</el-button>
+        <el-button class="btn2" type="primary" @click="showDialog('新增员工')">新增员工</el-button>
       </div>
     </el-card>
 
@@ -53,11 +53,37 @@
 
     <!-- 对话框 -->
     <el-dialog :title="dialogConfig.title" :visible="dialogConfig.isShowDialog" width="30%" @close="cancel">
-      <el-checkbox-group v-model="checkList">
+
+      <el-checkbox-group v-if="dialogConfig.title === '分配角色'" v-model="checkList">
         <el-checkbox v-for="item in cornerList" :key="item.id" :label="item.id">
           {{ item.name }}
         </el-checkbox>
       </el-checkbox-group>
+
+      <el-form v-if="dialogConfig.title === '新增员工'" ref="newEmployeeFormRef" :rules="newEmployeeFormRules" :model="newEmployeeFormData" class="form">
+        <el-form-item prop="username" class="item" label="姓名" label-width="100px">
+          <el-input v-model="newEmployeeFormData.username" class="input"></el-input>
+        </el-form-item>
+        <el-form-item prop="mobile" class="item1" label="手机" label-width="100px">
+          <el-input v-model="newEmployeeFormData.mobile" class="input"></el-input>
+        </el-form-item>
+        <el-form-item prop="timeOfEntry" class="item2" label="入职时间" label-width="100px">
+          <el-date-picker v-model="newEmployeeFormData.timeOfEntry" placeholder="请选择入职时间" />
+        </el-form-item>
+        <el-form-item prop="formOfEmployment" class="item3" label="聘用形式" label-width="100px">
+          <el-input v-model="newEmployeeFormData.formOfEmployment" class="input"></el-input>
+        </el-form-item>
+        <el-form-item prop="workNumber" class="item4" label="工号" label-width="100px">
+          <el-input v-model="newEmployeeFormData.workNumber" class="input"></el-input>
+        </el-form-item>
+        <el-form-item prop="departmentName" class="item5" label="部门" label-width="100px">
+          <el-input v-model="newEmployeeFormData.departmentName" class="input"></el-input>
+        </el-form-item>
+        <el-form-item prop="correctionTime" class="item6" label="转正时间" label-width="100px">
+          <el-date-picker v-model="newEmployeeFormData.correctionTime" placeholder="请选择入职时间" />
+        </el-form-item>
+      </el-form>
+
       <el-row slot="footer" class="dialog-footer">
         <el-button @click="cancel">取 消</el-button>
         <el-button type="primary" @click="sure">确 定</el-button>
@@ -66,7 +92,7 @@
   </div>
 </template>
 <script>
-import { getEmployeeList, getStaffInfo } from '@/api/employeeManagement.js'
+import { getEmployeeList, getStaffInfo, addStaff } from '@/api/employeeManagement.js'
 import { getAllTheCornerList, updateRole, delRole } from '@/api/roleManagement.js'
 import { formatDate } from '@/filters'
 export default {
@@ -89,7 +115,39 @@ export default {
       },
       cornerList: [], // 角色列表
       checkList: [], // 选中项
-      selectStaffId: 0 // 当前员工 ID
+      selectStaffId: 0, // 当前员工 ID
+      newEmployeeFormData: { // 新增员工 表单数据
+        username: '',
+        mobile: '',
+        timeOfEntry: '',
+        formOfEmployment: '',
+        workNumber: '',
+        departmentName: '',
+        correctionTime: ''
+      },
+      newEmployeeFormRules: { // 表单验证规则
+        username: [
+          { required: true, trigger: 'blur', message: '不能为空' } // 不能为空
+        ],
+        mobile: [
+          { required: true, trigger: 'blur', message: '不能为空' } // 不能为空
+        ],
+        timeOfEntry: [
+          { required: true, trigger: 'blur', message: '不能为空' } // 不能为空
+        ],
+        formOfEmployment: [
+          { required: true, trigger: 'blur', message: '不能为空' } // 不能为空
+        ],
+        workNumber: [
+          { required: true, trigger: 'blur', message: '不能为空' } // 不能为空
+        ],
+        departmentName: [
+          { required: true, trigger: 'blur', message: '不能为空' } // 不能为空
+        ],
+        correctionTime: [
+          { required: true, trigger: 'blur', message: '不能为空' } // 不能为空
+        ]
+      }
     }
   },
   created() {
@@ -118,19 +176,37 @@ export default {
       this.getEmployeeList()
     },
     async sure() { // 确定
-      await updateRole({ id: this.selectStaffId, roleIds: this.checkList })
-      this.$message.success('分配角色成功')
+      if (this.dialogConfig.title === '分配角色') {
+        await updateRole({ id: this.selectStaffId, roleIds: this.checkList })
+        this.$message.success('分配角色成功')
+      }
+      if (this.dialogConfig.title === '新增员工') {
+        await addStaff(this.newEmployeeFormData)
+        this.$message.success('新增员工成功')
+        this.getEmployeeList()
+        setTimeout(() => {
+          this.$refs.newEmployeeFormRef.resetFields()
+        }, 100)
+      }
       this.dialogConfig.isShowDialog = false
     },
     cancel() { // 取消
+      if (this.dialogConfig.title === '新增员工') {
+        setTimeout(() => {
+          this.$refs.newEmployeeFormRef.resetFields()
+        }, 100)
+      }
       this.dialogConfig.isShowDialog = false
     },
     async showDialog(type, id) { // 显示对话框
       if (type === '分配角色') {
         this.dialogConfig.title = '分配角色'
+        this.selectStaffId = id
+        await this.getStaffInfo(id)
       }
-      this.selectStaffId = id
-      await this.getStaffInfo(id)
+      if (type === '新增员工') {
+        this.dialogConfig.title = '新增员工'
+      }
       this.dialogConfig.isShowDialog = true
     }
   }
