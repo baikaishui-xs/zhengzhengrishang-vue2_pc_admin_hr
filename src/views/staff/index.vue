@@ -11,9 +11,9 @@
         <span class="text2">条记录</span>
       </div>
       <div class="right-box">
-        <el-button class="btn" type="success">excel 导入</el-button>
+        <el-button class="btn" type="success" @click="$router.push('import')">excel 导入</el-button>
         <el-button class="btn1" type="danger">excel 导出</el-button>
-        <el-button class="btn2" type="primary">excel 新增员工</el-button>
+        <el-button class="btn2" type="primary">新增员工</el-button>
       </div>
     </el-card>
 

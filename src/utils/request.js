@@ -26,6 +26,7 @@ service.interceptors.response.use(response => {
   }
 
   Message.error(response.data.message)
+  return Promise.reject(response.data.message)
 }, error => {
   // 判断 token 是否过期
   if (error.response && error.response.data && error.response.data.code === 10002) {
