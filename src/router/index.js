@@ -82,6 +82,17 @@ export const constantRoutes = [
     }]
   },
 
+  // 员工详情
+  {
+    path: '/staffInfo',
+    component: Layout,
+    children: [{
+      path: '/staffInfo',
+      name: 'StaffInfo',
+      component: () => import('@/views/staff/staffInfo')
+    }]
+  },
+
   {
     path: '/demo',
     component: () => import('@/views/demo/index')

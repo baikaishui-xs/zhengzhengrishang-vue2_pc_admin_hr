@@ -27,12 +27,16 @@
       <el-table-column class="workNumber" label="工号" prop="workNumber" align="center"></el-table-column>
       <el-table-column class="formOfEmployment" label="聘用形式" prop="formOfEmployment" align="center"></el-table-column>
       <el-table-column class="departmentName" label="部门" prop="departmentName" align="center"></el-table-column>
-      <el-table-column class="timeOfEntry" label="入职时间" prop="timeOfEntry" align="center"></el-table-column>
+      <el-table-column class="timeOfEntry" label="入职时间" prop="timeOfEntry" align="center">
+        <template v-slot="{row}">
+          {{ row.timeOfEntry | formatDate }}
+        </template>
+      </el-table-column>
       <el-table-column class="operate" label="操作" align="center">
         <template v-slot="{row}">
-          <span class="check" style="color: #44A0FF; cursor: pointer">查看</span>
+          <span class="check" style="color: #44A0FF; cursor: pointer" @click="$router.push({name: 'StaffInfo', query: {id: row.id}})">查看</span>
           <span class="role" style="margin: 0 10px; color: #67C23A; cursor: pointer" @click="showDialog('分配角色', row.id)">角色</span>
-          <span class="del" style="color: #F56C6D; cursor: pointer">删除</span>
+          <span class="del" style="color: #F56C6D; cursor: pointer" @click="delRole(row.id)">删除</span>
         </template>
       </el-table-column>
     </el-table>
@@ -63,9 +67,13 @@
 </template>
 <script>
 import { getEmployeeList, getStaffInfo } from '@/api/employeeManagement.js'
-import { getAllTheCornerList, updateRole } from '@/api/roleManagement.js'
+import { getAllTheCornerList, updateRole, delRole } from '@/api/roleManagement.js'
+import { formatDate } from '@/filters'
 export default {
   name: 'Staff',
+  filters: {
+    formatDate // 格式化时间
+  },
   data() {
     return {
       tableList: [], // 表格数据
@@ -101,6 +109,9 @@ export default {
     async getAllTheCornerList() { // 获取 所有角色列表
       const result = await getAllTheCornerList()
       this.cornerList = result.rows
+    },
+    async delRole(id) { // 删除 角色
+      await delRole(id)
     },
     changePage(newPage) { // 监听页码
       this.paginationObj.page = newPage

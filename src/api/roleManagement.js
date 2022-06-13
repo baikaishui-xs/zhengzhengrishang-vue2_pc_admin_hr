@@ -17,3 +17,10 @@ export function updateRole(data) { // 给员工分配角色
     data
   })
 }
+
+export function delRole(id) { // 删除 角色
+  return request({
+    url: `/sys/user/${id}`,
+    method: 'delete'
+  })
+}
