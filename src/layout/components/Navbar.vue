@@ -33,12 +33,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
+// import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 
 export default {
   components: {
-    Breadcrumb,
+    // Breadcrumb,
     Hamburger
   },
   computed: {
@@ -64,7 +64,8 @@ export default {
   height: 50px;
   overflow: hidden;
   position: relative;
-  background: #fff;
+  background: #AA292B;
+  // background: url('../../assets/images/pic_005.png') no-repeat center;
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
 
   .hamburger-container {

@@ -18,9 +18,39 @@ export function updateRole(data) { // 给员工分配角色
   })
 }
 
-export function delRole(id) { // 删除 角色
+export function delRole(id) { // 删除 员工
   return request({
     url: `/sys/user/${id}`,
+    method: 'delete'
+  })
+}
+
+export function addRole(data) { // 新增角色
+  return request({
+    url: '/sys/role',
+    method: 'post',
+    data
+  })
+}
+
+export function getRoleDetails(id) { // 获取 角色详情
+  return request({
+    url: `/sys/role/${id}`,
+    method: 'get'
+  })
+}
+
+export function updateRoleDetails(data, id) { // 更新 角色详情
+  return request({
+    url: `/sys/role/${id}`,
+    method: 'put',
+    data
+  })
+}
+
+export function delRole1(id) { // 删除角色
+  return request({
+    url: `/sys/role/${id}`,
     method: 'delete'
   })
 }

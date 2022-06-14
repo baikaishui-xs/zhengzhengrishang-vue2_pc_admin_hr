@@ -103,6 +103,17 @@ export const constantRoutes = [
     }]
   },
 
+  { // 公司设置
+    path: '/companySettings',
+    component: Layout,
+    children: [{
+      path: '',
+      name: 'companySettings',
+      component: () => import('@/views/companySettings'),
+      meta: { title: '公司设置', icon: 'el-icon-s-tools' }
+    }]
+  },
+
   {
     path: '/demo',
     component: () => import('@/views/demo/index')
