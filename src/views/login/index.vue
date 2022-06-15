@@ -49,7 +49,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #202124;
+  background: #A9292C;
   .main-area {
     width: 500px;
     .header-box {
