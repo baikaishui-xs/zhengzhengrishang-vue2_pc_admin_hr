@@ -22,3 +22,10 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function getUserInfo() { // 获取 用户信息
+  return request({
+    url: '/sys/profile',
+    method: 'post'
+  })
+}

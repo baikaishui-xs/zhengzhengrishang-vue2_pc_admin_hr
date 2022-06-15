@@ -42,6 +42,7 @@ export default {
   methods: {
     async login() {
       await this.$store.dispatch('user/getToken', this.formData)
+      await this.$store.dispatch('user/getUserInfo')
       this.$router.push({
         name: 'Dashboard'
       })

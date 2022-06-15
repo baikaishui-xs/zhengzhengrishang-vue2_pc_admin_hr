@@ -22,7 +22,7 @@
       <el-table-column class="index" label="序号" type="index" align="center" width="80px"></el-table-column>
       <el-table-column class="username" label="姓名" prop="username" align="center"></el-table-column>
       <el-table-column class="mobile" label="头像" align="center">
-        <img slot-scope="{row}" :src="row.staffPhoto" style="width: 100px; border-radius: 50%;">
+        <img v-imageError="defaultImg" slot-scope="{row}" :src="row.staffPhoto" style="width: 100px; border-radius: 50%;" @load="imgLost = false" @error="imgLost = true" @click="showQrCodeDialog(row.staffPhoto)">
       </el-table-column>
       <el-table-column class="workNumber" label="工号" prop="workNumber" align="center"></el-table-column>
       <el-table-column class="formOfEmployment" label="聘用形式" prop="formOfEmployment" align="center"></el-table-column>
@@ -89,12 +89,21 @@
         <el-button type="primary" @click="sure">确 定</el-button>
       </el-row>
     </el-dialog>
+
+    <!-- 二维码 对话框 -->
+    <el-dialog title="二维码" :visible="whetherShowQrCodeDialog" width="30%" @close="closureQrCodeDialog">
+      <el-row type="flex" justify="center">
+        <canvas ref="qrCodeCanvas">
+        </canvas></el-row>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { getEmployeeList, getStaffInfo, addStaff } from '@/api/employeeManagement.js'
 import { getAllTheCornerList, updateRole, delRole } from '@/api/roleManagement.js'
 import { formatDate } from '@/filters'
+import QrCode from 'qrcode'
+
 export default {
   name: 'Staff',
   filters: {
@@ -147,7 +156,9 @@ export default {
         correctionTime: [
           { required: true, trigger: 'blur', message: '不能为空' } // 不能为空
         ]
-      }
+      },
+      defaultImg: require('@/assets/images/default.png'), // 考虑到打包时，路径会发送变化，导致图片加载失败。所以这里使用 require 包裹起来
+      whetherShowQrCodeDialog: false // 是否显示 二维码 对话框
     }
   },
   created() {
@@ -208,6 +219,17 @@ export default {
         this.dialogConfig.title = '新增员工'
       }
       this.dialogConfig.isShowDialog = true
+    },
+    closureQrCodeDialog() { // 关闭 二维码 对话框
+      this.whetherShowQrCodeDialog = false
+    },
+    showQrCodeDialog(url) { // 显示 二维码 对话框
+      this.whetherShowQrCodeDialog = true
+
+      this.$nextTick(() => { // 说明：显示对话框后数据已更新，但是结构还没渲染出来，所以需要使用 $nextTick 来等待结构渲染完毕
+        // this.$nextTick 作用：等待结构渲染完毕后再去执行回调函数
+        QrCode.toCanvas(this.$refs.qrCodeCanvas, url) // 转换成二维码
+      })
     }
   }
 }

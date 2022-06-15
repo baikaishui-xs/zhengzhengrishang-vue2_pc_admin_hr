@@ -6,8 +6,9 @@
 
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
-        <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+        <div class="avatar-wrapper" style="margin: 0">
+          <span style="color: #fff; font-weight: 500; font-size: 18px;">{{ $store.state.user.username }}</span>
+          <!-- <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar"> -->
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -116,10 +117,11 @@ export default {
         }
 
         .el-icon-caret-bottom {
+          color: #fff;
           cursor: pointer;
           position: absolute;
           right: -20px;
-          top: 25px;
+          top: 21px;
           font-size: 12px;
         }
       }

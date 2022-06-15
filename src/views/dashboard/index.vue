@@ -286,8 +286,10 @@ export default {
   display: flex;
   flex-wrap: wrap;
   > div {
-    width: 835px;
     height: 400px;
+    width: calc(100% / 3);  // 这里的10px = (分布个数3-1)*间隙5px, 可以根据实际的分布个数和间隙区调整
+    min-width: calc(100% / 3); // 加入这两个后每个item的宽度就生效了
+    max-width: calc(100% / 3);
   }
 }
 </style>
