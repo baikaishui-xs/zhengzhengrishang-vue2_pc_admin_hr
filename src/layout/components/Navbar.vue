@@ -1,7 +1,9 @@
 <template>
-  <div class="navbar">
-    <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-
+  <div class="navbar" style="display: flex; justify-content: space-between; align-items: center">
+    <div class="left-box" style="display: flex; align-items: center">
+      <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+      <span style="color: #fff; font-weight: 500; font-size: 18px">郑郑日上人力资源管理系统</span>
+    </div>
     <!-- <breadcrumb class="breadcrumb-container" /> -->
 
     <div class="right-menu">
