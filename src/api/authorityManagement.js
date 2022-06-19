@@ -8,3 +8,11 @@ export function getOwnershipPoint() { // 获取 所有权限点
     method: 'get'
   })
 }
+
+export function addAuthorityPoint(data) { // 添加 权限点
+  return request({
+    url: '/sys/permission',
+    method: 'post',
+    data
+  })
+}

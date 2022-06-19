@@ -114,6 +114,17 @@ export const constantRoutes = [
     }]
   },
 
+  { // 权限设置
+    path: '/permissionSettings',
+    component: Layout,
+    children: [{
+      path: '',
+      name: 'permissionSettings',
+      component: () => import('@/views/permissionSettings'),
+      meta: { title: '权限设置', icon: 'el-icon-set-up' }
+    }]
+  },
+
   {
     path: '/demo',
     component: () => import('@/views/demo/index')
