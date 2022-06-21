@@ -1,22 +1,18 @@
 import { getToken, setToken, removeToken, setTimeStamp } from '@/utils/auth'
 
 import { login, getUserInfo } from '@/api/user'
-
+import { resetRouter } from '@/router'
 const state = {
   token: getToken(), // token
-  username: '' // 用户名
+  userInfo: '' // 用户名
 }
 const mutations = {
   setToken(state, token) {
     state.token = token
     setToken(token)
   },
-  quitLogin(state) {
-    state.token = ''
-    removeToken()
-  },
-  setUsername(state, username) {
-    state.username = username
+  setUserInfo(state, userInfo) {
+    state.userInfo = userInfo
   }
 }
 const actions = {
@@ -26,7 +22,15 @@ const actions = {
   },
   async getUserInfo(context) { // 获取 用户信息
     const result = await getUserInfo()
-    context.commit('setUsername', result.username)
+    context.commit('setUserInfo', result)
+    return result
+  },
+  quitLogin(context) { // 退出登录
+    context.commit('setToken', '')
+    context.commit('setUserInfo', '')
+    removeToken()
+    resetRouter() // 重置路由
+    context.commit('permission/setRoutes', [], { root: true }) // 重置路由
   }
 }
 

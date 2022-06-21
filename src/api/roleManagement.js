@@ -6,7 +6,10 @@ export function getAllTheCornerList(params) { // 获取 所有角色列表
   return request({
     url: '/sys/role',
     method: 'get',
-    params
+    params: {
+      page: 1,
+      pagesize: 20
+    }
   })
 }
 

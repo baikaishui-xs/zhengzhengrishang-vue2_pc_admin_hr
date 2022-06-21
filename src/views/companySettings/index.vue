@@ -1,5 +1,5 @@
 <template>
-  <!-- 公司设置 -->
+  <!-- 角色管理 -->
 
   <div class="company-settings-container">
     <el-card>
@@ -15,7 +15,7 @@
             <el-table-column label="描述" prop="description" align="center"></el-table-column>
             <el-table-column label="操作" prop="mobile" align="center">
               <template v-slot="{row}">
-                <el-button type="success" @click="showDialog('分配角色', row.id)">分配角色</el-button>
+                <el-button type="success" @click="showDialog('分配权限', row.id)">分配权限</el-button>
                 <el-button type="primary" @click="showDialog('编辑角色', row.id)">编辑</el-button>
                 <el-button type="danger" @click="delRole1(row.id)">删除</el-button>
               </template>
@@ -53,8 +53,8 @@
         </el-form-item>
       </el-form>
 
-      <!-- 分配角色 -->
-      <el-tree v-if="dialogConfig.title === '分配角色'" ref="assigningRolesRef" show-checkbox :data="ownershipPoint" :props="defaultProps" default-expand-all :default-checked-keys="selectNode" node-key="id"></el-tree>
+      <!-- 分配权限 -->
+      <el-tree v-if="dialogConfig.title === '分配权限'" ref="assigningRolesRef" :check-strictly="true" show-checkbox :data="ownershipPoint" :props="defaultProps" default-expand-all :default-checked-keys="selectNode" node-key="id"></el-tree>
 
       <el-row slot="footer" class="dialog-footer">
         <el-button @click="cancel">取 消</el-button>
@@ -125,20 +125,20 @@ export default {
         await updateRoleDetails(this.addRoleFormData, this.roleId)
         this.$message.success('编辑角色成功')
       }
-      if (this.dialogConfig.title === '分配角色') {
+      if (this.dialogConfig.title === '分配权限') {
         await assignPermissions({ id: this.roleId, permIds: this.$refs.assigningRolesRef.getCheckedKeys() })
-        this.$message.success('分配角色成功')
+        this.$message.success('分配权限成功')
       }
       this.dialogConfig.isShowDialog = false
       if (this.dialogConfig.title === '新增角色' || this.dialogConfig.title === '编辑角色') this.$refs.addRoleFormRef.resetFields()
-      if (this.dialogConfig.title === '分配角色') this.addRoleFormData = {}
+      if (this.dialogConfig.title === '分配权限') this.addRoleFormData = {}
       this.getAllTheCornerList()
     },
     cancel() { // 取消
       this.selectNode = []
       this.dialogConfig.isShowDialog = false
       if (this.dialogConfig.title === '编辑角色' || this.dialogConfig.title === '新增角色') this.$refs.addRoleFormRef.resetFields()
-      if (this.dialogConfig.title === '分配角色') this.addRoleFormData = {}
+      if (this.dialogConfig.title === '分配权限') this.addRoleFormData = {}
     },
     async showDialog(type, id) { // 显示对话框
       this.dialogConfig.title = type
@@ -148,7 +148,7 @@ export default {
           await this.getRoleDetails(id)
         })
       }
-      if (type === '分配角色') {
+      if (type === '分配权限') {
         await this.getOwnershipPoint()
         await this.getRoleDetails(id)
       }

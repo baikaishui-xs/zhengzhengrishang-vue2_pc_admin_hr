@@ -31,7 +31,7 @@ service.interceptors.response.use(response => {
   // 判断 token 是否过期
   if (error.response && error.response.data && error.response.data.code === 10002) {
     // 调用登出方法
-    store.commit('user/quitLogin')
+    store.commit('dispatch/quitLogin')
     router.push('/login')
   } else {
     Message.error(error.message) // 提示错误信息

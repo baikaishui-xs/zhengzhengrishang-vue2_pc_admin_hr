@@ -17,6 +17,8 @@ import '@/permission' // permission control
 
 import Components from '@/components'
 
+import CheckPermission from '@/mixin/checkPermission'
+
 Vue.use(Components)
 
 import * as echarts from 'echarts'
@@ -48,9 +50,16 @@ Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 
+Vue.mixin(CheckPermission)
+
 new Vue({
   el: '#app',
   router,
   store,
+  async created() {
+    const { roles } = await this.$store.dispatch('user/getUserInfo')
+    const routes = await this.$store.dispatch('permission/filterRoutes', roles.menus)
+    this.$router.addRoutes(routes) // 将获取到的用户所拥有的动态路由添加到路由表中，并将 404 路由放到动态路由的最后面
+  },
   render: h => h(App)
 })

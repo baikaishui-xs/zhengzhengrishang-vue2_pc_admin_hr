@@ -9,7 +9,7 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper" style="margin: 0">
-          <span style="color: #fff; font-weight: 500; font-size: 18px;">{{ $store.state.user.username }}</span>
+          <span style="color: #fff; font-weight: 500; font-size: 18px;">{{ $store.state.user.userInfo.username }}</span>
           <!-- <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar"> -->
           <i class="el-icon-caret-bottom" />
         </div>
@@ -44,7 +44,7 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      this.$store.commit('user/quitLogin')
+      this.$store.dispatch('user/quitLogin')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }

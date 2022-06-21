@@ -6,7 +6,7 @@ import store from '@/store'
 // 白名单
 const whiteList = ['/login', '/404', '/demo']
 // 前置守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from, next) => { // （参数一：将要 访问 路由的信息对象）（参数二：将要 离开 路由的信息对象）（参数三：是一个函数，表示放行，允许这次路由导航）
   // 开启进度条
   nprogress.start()
   // 判断是否有 token

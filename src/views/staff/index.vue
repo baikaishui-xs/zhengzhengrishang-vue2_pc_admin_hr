@@ -11,9 +11,9 @@
         <span class="text2">条记录</span>
       </div>
       <div class="right-box">
-        <el-button class="btn" type="success" @click="$router.push('import')">excel 导入</el-button>
-        <el-button class="btn1" type="danger">excel 导出</el-button>
-        <el-button class="btn2" type="primary" @click="showDialog('新增员工')">新增员工</el-button>
+        <el-button class="btn" type="success" @click="$router.push('importExcel')">excel 导入</el-button>
+        <el-button class="btn1" type="danger" @click="exportData">excel 导出</el-button>
+        <el-button class="btn2" type="primary" :disabled="!checkPermission('add-staff')" @click="showDialog('新增员工')">新增员工</el-button>
       </div>
     </el-card>
 
@@ -122,7 +122,7 @@ export default {
         isShowDialog: false, // 是否显示对话框
         title: '' // 标题
       },
-      cornerList: [], // 角色列表
+      cornerList: [], // 员工列表
       checkList: [], // 选中项
       selectStaffId: 0, // 当前员工 ID
       newEmployeeFormData: { // 新增员工 表单数据
@@ -229,6 +229,29 @@ export default {
       this.$nextTick(() => { // 说明：显示对话框后数据已更新，但是结构还没渲染出来，所以需要使用 $nextTick 来等待结构渲染完毕
         // this.$nextTick 作用：等待结构渲染完毕后再去执行回调函数
         QrCode.toCanvas(this.$refs.qrCodeCanvas, url) // 转换成二维码
+      })
+    },
+    exportData() { // 将数据导出为 Excel 文件
+      import('@/vendor/Export2Excel').then(excel => { // 懒加载
+        const order = ['mobile', 'username', 'timeOfEntry', 'correctionTime', 'workNumber']
+        /* 格式化数据：将数组中对象类型的成员格式化成数组类型的成员 && 筛选出指定的属性 && 成员中的数据按照规定的顺序排列 && 去掉成员中的数据 key 只保留 value
+        格式化前：[{id: "1063705989926227968", mobile: "13800000002", username: "管理员"}, {id: "1063705989926227968", mobile: "13800000003", username: "孙财"}]
+        格式化后：[['13800000002', '管理员'], ['13800000003', '孙财']]
+        */
+        const newRows = this.tableList.map(item => Object.keys(order).map(key => {
+          // 日期转换
+          if (order[key] === 'timeOfEntry' || order[key] === 'correctionTime') {
+            return formatDate(item[order[key]])
+          }
+
+          return item[order[key]]
+        }))
+
+        excel.export_json_to_excel({
+          header: ['手机号', '姓名', '入职日期', '转正日期', '工号'],
+          data: newRows,
+          filename: '员工工资表'
+        })
       })
     }
   }

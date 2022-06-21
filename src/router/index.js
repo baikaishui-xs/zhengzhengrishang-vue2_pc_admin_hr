@@ -1,5 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import companySettings from './modules/companySettings'
+import organization from './modules/organization'
+import permissionSettings from './modules/permissionSettings'
+import staff from './modules/staff'
 
 Vue.use(Router)
 
@@ -55,35 +59,32 @@ export const constantRoutes = [
     }]
   },
 
-  // 组织架构
-  {
-    path: '/organization', // 路由地址
-    component: Layout, // 路由组件（这里的组件要为 Layout，也就是在 Layout 组件中导航）
-    children: [{ // 二级路由
-      path: '', // path 为空，则默认使用一级路由的地址，也就是会和一级路由的组件一起展示
-      name: 'Organization',
-      component: () => import('@/views/organization'), // 按需加载
-      meta: { // 路由元信息（作用：向组件提供数据）
-        title: '组织架构',
-        icon: 'el-icon-office-building'
-      }
-    }]
-  },
+  // { // 组织架构
+  //   path: '/organization', // 路由地址
+  //   component: Layout, // 路由组件（这里的组件要为 Layout，也就是在 Layout 组件中导航）
+  //   children: [{ // 二级路由
+  //     path: '', // path 为空，则默认使用一级路由的地址，也就是会和一级路由的组件一起展示
+  //     name: 'Organization',
+  //     component: () => import('@/views/organization'), // 按需加载
+  //     meta: { // 路由元信息（作用：向组件提供数据）
+  //       title: '组织架构',
+  //       icon: 'el-icon-office-building'
+  //     }
+  //   }]
+  // },
 
-  // 员工
-  {
-    path: '/staff',
-    component: Layout,
-    children: [{
-      path: '',
-      name: 'Staff',
-      component: () => import('@/views/staff/index'),
-      meta: { title: '员工', icon: 'el-icon-user-solid' }
-    }]
-  },
+  // { // 员工
+  //   path: '/staff',
+  //   component: Layout,
+  //   children: [{
+  //     path: '',
+  //     name: 'Staff',
+  //     component: () => import('@/views/staff/index'),
+  //     meta: { title: '员工', icon: 'el-icon-user-solid' }
+  //   }]
+  // },
 
-  // 员工详情
-  {
+  { // 员工详情
     path: '/staffInfo',
     component: Layout,
     children: [{
@@ -94,44 +95,51 @@ export const constantRoutes = [
   },
 
   { // excel 导入路由
-    path: '/import',
+    path: '/importExcel',
     component: Layout,
     hidden: true, // 不显示在左侧菜单中
     children: [{
       path: '',
-      component: () => import('@/views/import')
+      component: () => import('@/views/importExcel')
     }]
   },
 
-  { // 公司设置
-    path: '/companySettings',
-    component: Layout,
-    children: [{
-      path: '',
-      name: 'companySettings',
-      component: () => import('@/views/companySettings'),
-      meta: { title: '公司设置', icon: 'el-icon-s-tools' }
-    }]
-  },
+  // { // 公司设置
+  //   path: '/companySettings',
+  //   component: Layout,
+  //   children: [{
+  //     path: '',
+  //     name: 'companySettings',
+  //     component: () => import('@/views/companySettings'),
+  //     meta: { title: '公司设置', icon: 'el-icon-s-tools' }
+  //   }]
+  // },
 
-  { // 权限设置
-    path: '/permissionSettings',
-    component: Layout,
-    children: [{
-      path: '',
-      name: 'permissionSettings',
-      component: () => import('@/views/permissionSettings'),
-      meta: { title: '权限设置', icon: 'el-icon-set-up' }
-    }]
-  },
+  // { // 权限设置
+  //   path: '/permissionSettings',
+  //   component: Layout,
+  //   children: [{
+  //     path: '',
+  //     name: 'permissionSettings',
+  //     component: () => import('@/views/permissionSettings'),
+  //     meta: { title: '权限设置', icon: 'el-icon-set-up' }
+  //   }]
+  // },
 
   {
     path: '/demo',
     component: () => import('@/views/demo/index')
-  },
+  }
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  // { path: '*', redirect: '/404', hidden: true }
+]
+
+export const asyncRoutes = [ // 动态路由
+  companySettings,
+  organization,
+  permissionSettings,
+  staff
 ]
 
 const createRouter = () => new Router({
