@@ -143,7 +143,8 @@ export const asyncRoutes = [ // 动态路由
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  mode: 'history', // require service support
+  base: 'hr/', // 前缀地址
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })
