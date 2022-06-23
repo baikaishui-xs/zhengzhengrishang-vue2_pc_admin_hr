@@ -5,26 +5,26 @@
     <el-card>
       <el-tabs v-model="activeName">
         <!-- 角色管理 tab -->
-        <el-tab-pane label="角色管理" name="user">
-          <el-button type="primary" style="margin-bottom: 20px;" @click="showDialog('新增角色')">新增角色</el-button>
+        <el-tab-pane :label="$t('companySettings.manage')" name="user">
+          <el-button type="primary" style="margin-bottom: 20px;" @click="showDialog('新增角色')">{{ $t('companySettings.newRole') }}</el-button>
 
           <!-- Table 表格（基础表格） -->
           <el-table :data="tableList" border stripe>
-            <el-table-column label="序号" type="index" align="center" width="80px"></el-table-column>
-            <el-table-column label="角色名" prop="name" align="center"></el-table-column>
-            <el-table-column label="描述" prop="description" align="center"></el-table-column>
-            <el-table-column label="操作" prop="mobile" align="center">
+            <el-table-column :label="$t('companySettings.number')" type="index" align="center" width="80px"></el-table-column>
+            <el-table-column :label="$t('companySettings.name')" prop="name" align="center"></el-table-column>
+            <el-table-column :label="$t('companySettings.describe')" prop="description" align="center"></el-table-column>
+            <el-table-column :label="$t('companySettings.operate')" prop="mobile" align="center">
               <template v-slot="{row}">
-                <el-button type="success" @click="showDialog('分配权限', row.id)">分配权限</el-button>
-                <el-button type="primary" @click="showDialog('编辑角色', row.id)">编辑</el-button>
-                <el-button type="danger" @click="delRole1(row.id)">删除</el-button>
+                <el-button type="success" @click="showDialog('分配权限', row.id)">{{ $t('companySettings.distribute') }}</el-button>
+                <el-button type="primary" @click="showDialog('编辑角色', row.id)">{{ $t('companySettings.edit') }}</el-button>
+                <el-button type="danger" @click="delRole1(row.id)">{{ $t('companySettings.del') }}</el-button>
               </template>
             </el-table-column>
           </el-table>
         </el-tab-pane>
 
         <!-- 公司信息 tab -->
-        <el-tab-pane label="公司信息" name="config">
+        <el-tab-pane :label="$t('companySettings.info')" name="config">
           <el-alert class="el-icon-video-camera-solid" title="对公司名称、公司地址、营业执照、公司地区的更新，将使得公司资料被重新审核，请谨慎修改" type="info"></el-alert>
 
           <!-- 表单 -->

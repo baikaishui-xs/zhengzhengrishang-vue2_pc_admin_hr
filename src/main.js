@@ -19,6 +19,8 @@ import Components from '@/components'
 
 import CheckPermission from '@/mixin/checkPermission'
 
+import i18n from '@/lang'
+
 Vue.use(Components)
 
 import * as echarts from 'echarts'
@@ -46,7 +48,9 @@ Object.keys(directives).forEach(key => {
 // set ElementUI lang to EN
 // Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
-Vue.use(ElementUI)
+Vue.use(ElementUI, {
+  i18n: (key, value) => i18n.t(key) // 动态切换语言类型（key：当前语言类型）
+})
 
 Vue.config.productionTip = false
 
@@ -56,6 +60,7 @@ new Vue({
   el: '#app',
   router,
   store,
+  i18n,
   async created() {
     const { roles } = await this.$store.dispatch('user/getUserInfo')
     const routes = await this.$store.dispatch('permission/filterRoutes', roles.menus)

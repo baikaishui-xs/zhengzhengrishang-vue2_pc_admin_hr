@@ -2,18 +2,22 @@
   <div class="navbar" style="display: flex; justify-content: space-between; align-items: center">
     <div class="left-box" style="display: flex; align-items: center">
       <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-      <span style="color: #fff; font-weight: 500; font-size: 18px">郑郑日上人力资源管理系统</span>
+      <span style="color: #fff; font-weight: 500; font-size: 18px">{{ $t('title') }}</span>
     </div>
     <!-- <breadcrumb class="breadcrumb-container" /> -->
 
     <div class="right-menu">
+      <!-- 切换语言 按钮 -->
+      <LangSelect></LangSelect>
+
+      <!-- 切换主题 按钮 -->
       <ThemePicker style="width: 25px; height: 25px"></ThemePicker>
 
-      <!-- 全屏按钮 -->
+      <!-- 全屏 按钮 -->
       <div class="el-icon-full-screen" style="font-size: 25px; color: #fff; font-weight: 900" @click="toggle"></div>
 
       <el-dropdown class="avatar-container" trigger="click">
-        <div class="avatar-wrapper" style="margin: 0">
+        <div class="avatar-wrapper" style="margin: 0;">
           <span style="color: #fff; font-weight: 500; font-size: 18px; ">{{ $store.state.user.userInfo.username }}</span>
           <!-- <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar"> -->
           <i class="el-icon-caret-bottom" />
@@ -126,6 +130,8 @@ export default {
       .avatar-wrapper {
         margin-top: 5px;
         position: relative;
+        display: flex;
+        align-items: center;
 
         .user-avatar {
           cursor: pointer;
@@ -139,7 +145,6 @@ export default {
           cursor: pointer;
           position: absolute;
           right: -20px;
-          top: 21px;
           font-size: 12px;
         }
       }
