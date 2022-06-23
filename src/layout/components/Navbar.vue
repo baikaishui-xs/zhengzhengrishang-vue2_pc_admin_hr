@@ -7,9 +7,14 @@
     <!-- <breadcrumb class="breadcrumb-container" /> -->
 
     <div class="right-menu">
+      <ThemePicker style="width: 25px; height: 25px"></ThemePicker>
+
+      <!-- 全屏按钮 -->
+      <div class="el-icon-full-screen" style="font-size: 25px; color: #fff; font-weight: 900" @click="toggle"></div>
+
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper" style="margin: 0">
-          <span style="color: #fff; font-weight: 500; font-size: 18px;">{{ $store.state.user.userInfo.username }}</span>
+          <span style="color: #fff; font-weight: 500; font-size: 18px; ">{{ $store.state.user.userInfo.username }}</span>
           <!-- <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar"> -->
           <i class="el-icon-caret-bottom" />
         </div>
@@ -25,8 +30,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
+
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+
+import screenfull from 'screenfull'
 
 export default {
   components: {
@@ -46,6 +54,9 @@ export default {
     async logout() {
       this.$store.dispatch('user/quitLogin')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    },
+    toggle() {
+      screenfull.toggle()
     }
   }
 }
@@ -80,7 +91,12 @@ export default {
   .right-menu {
     float: right;
     height: 100%;
-    line-height: 50px;
+    display: flex;
+    align-items: center;
+
+    > div {
+      margin-right: 20px;
+    }
 
     &:focus {
       outline: none;
