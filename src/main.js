@@ -63,7 +63,10 @@ new Vue({
   i18n,
   async created() {
     const { roles } = await this.$store.dispatch('user/getUserInfo')
-    const routes = await this.$store.dispatch('permission/filterRoutes', roles.menus)
+
+    // const routes = await this.$store.dispatch('permission/filterRoutes', roles.menus)
+    console.log(roles.menus)
+    const routes = await this.$store.dispatch('permission/filterRoutes', ['settings', 'social_securitys', 'permissions', 'approvals', 'departments', 'salarys', 'saas-clients', 'employees', 'user12345', 'attendances']) // 暂时把路由写死
     this.$router.addRoutes(routes) // 将获取到的用户所拥有的动态路由添加到路由表中，并将 404 路由放到动态路由的最后面
   },
   render: h => h(App)

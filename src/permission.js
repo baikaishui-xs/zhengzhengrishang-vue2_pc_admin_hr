@@ -10,20 +10,10 @@ router.beforeEach((to, from, next) => { // （参数一：将要 访问 路由�
   // 开启进度条
   nprogress.start()
   // 判断是否有 token
-  if (store.getters.token) {
-    if (to.path === '/login') {
-      next('/')
-    } else {
-      next()
-    }
+  if (store.getters.token || whiteList.includes(to.path)) {
+    next()
   } else {
-    // 没有token的情况下
-    if (whiteList.includes(to.path)) {
-      // 表示要去的地址在白名单
-      next()
-    } else {
-      next('/login')
-    }
+    next('/login')
   }
   // 解决手动切换地址时，进度条不关闭的问题
   nprogress.done()
