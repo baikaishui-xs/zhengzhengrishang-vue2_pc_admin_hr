@@ -2,6 +2,10 @@
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
 
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
+const productionGzipExtensions = ['js', 'css']
+const webpack = require('webpack')
+
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
@@ -61,7 +65,24 @@ module.exports = {
       alias: {
         '@': resolve('src')
       }
-    }
+    },
+    plugins: [
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+      // 压缩成 gz 格式
+      new CompressionWebpackPlugin({
+        filename: '[path].gz[query]',
+        algorithm: 'gzip',
+        test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
+        threshold: 10240, // 压缩超过 10k 的资源
+        minRatio: 0.8,
+        deleteOriginalAssets: false, // 删除原文件
+      }),
+      // 压缩成 br 格式
+      new webpack.optimize.LimitChunkCountPlugin({
+        maxChunks: 5,
+        minChunkSize: 100
+      })
+    ],
   },
   chainWebpack(config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload
