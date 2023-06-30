@@ -18,7 +18,7 @@ const mutations = {
 const actions = {
   async getToken(context, data) { // 获取 token
     const result = await login(data)
-    context.commit('setToken', result)
+    context.commit('setToken', `Bearer ${result}`)
   },
   async getUserInfo(context) { // 获取 用户信息
     const result = await getUserInfo()

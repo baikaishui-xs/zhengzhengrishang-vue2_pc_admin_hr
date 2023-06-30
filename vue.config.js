@@ -45,7 +45,8 @@ module.exports = {
       // 拦截携带 /api 的接口
       '/api': {
         // 代理到的目标地址
-        target: 'http://ihrm-java.itheima.net',
+        // target: 'http://ihrm-java.itheima.net',
+        target: 'http://ihrm.itheima.net',
         // 是否开启跨域
         changeOrigin: true,
         // 路径重写
@@ -75,14 +76,14 @@ module.exports = {
         test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
         threshold: 10240, // 压缩超过 10k 的资源
         minRatio: 0.8,
-        deleteOriginalAssets: false, // 删除原文件
+        deleteOriginalAssets: false // 删除原文件
       }),
       // 压缩成 br 格式
       new webpack.optimize.LimitChunkCountPlugin({
         maxChunks: 5,
         minChunkSize: 100
       })
-    ],
+    ]
   },
   chainWebpack(config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload
